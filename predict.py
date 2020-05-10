@@ -4,9 +4,29 @@ from models.lane_detection.perspective_utils import birdeye
 from models.lane_detection.line_utils import get_fits_by_sliding_windows, Line, get_fits_by_previous_fits
 from models.lane_detection.globals import xm_per_pix, time_window
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, json
 import numpy as np
 import cv2
+import os
+
+from PIL import Image
+from moviepy.editor import VideoFileClip
+
+from models.vehicle_detection.yolo_pipeline import *
+from models.vehicle_detection.lane import *
+from models.vehicle_detection.yolo_pipeline.yolo_pipeline import *
+
+
+def pipeline_yolo(img):
+
+    #img_undist, img_lane_augmented, lane_info = lane_process(img)
+    print("lane info %")
+    # print( lane_info)
+    img_undist =img
+    img_lane_augmented = img
+    lane_info={}
+    output = vehicle_detection_yolo(img_undist, img_lane_augmented, lane_info)
+    return output
 
 
 processed_frames = 0                    # counter of frames processed (when processing video)
@@ -91,18 +111,32 @@ def process_pipeline(frame, keep_state=True):
 
     return offset_meter
 
+def vehicle_method(img):
+    #print(img)
+    #newsize = (1280, 720)
+    #img = img.resize(newsize)
+    #img = np.array(img)
+    # (1) Yolo pipeline
+    yolo_result = pipeline_yolo(img)
+    return yolo_result
+
+
+
 
 @app.route('/predict', methods=['POST'])
 def get_prediction():
     distance_from_center_arr = []
+    vehicles =[]
     for key in request.files:
         filestr = request.files[key].read()  # "file" key'i ile gonderilen resmi al
         npimg = np.frombuffer(filestr, np.uint8)
         image = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
         distance_from_center = process_pipeline(image, keep_state=False)
         distance_from_center_arr.append(distance_from_center)
+        vehicles.append(vehicle_method(image))
 
-    return jsonify(distance_from_center_arr=distance_from_center_arr)
+    print(vehicles)
+    return jsonify(distance_from_center_arr=distance_from_center_arr,vehicles=json.dumps(str(vehicles)))
 
 
 if __name__ == '__main__':

@@ -1,7 +1,6 @@
 Flask app for cloud models of drivision
 
-Download lane detection models from https://www.dropbox.com/sh/tnsf0lw6psszvy4/AAA81r53jpUI3wLsRW6TiPCya?dl=0 and put them under models/lane_detection/downloaded_model/
-
+Download vehicle detection checkpoint from: https://drive.google.com/file/d/0B5WIzrIVeL0WS3N2VklTVmstelE/view and put it to the models/vehicle_detection/weights folder
 ## HOW TO RUN (WITH DOCKER)
 docker-compose up --build 
 
