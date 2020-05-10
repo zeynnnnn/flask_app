@@ -10,7 +10,7 @@ sudo docker-compose up --build
 reference: https://www.alexkras.com/how-to-use-virtualenv-in-python-to-install-packages-locally/
 
 
-*pip install virtualenv
+* pip install virtualenv
 * cd drivision-models
 * virtualenv venv
 * source venv/bin/activate (bu virtual env'i aktive ediyor, virtualenv i kapatmak icin deactivate yaziyoruz)
