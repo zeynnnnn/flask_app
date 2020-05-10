@@ -5,14 +5,6 @@ from models.lane_detection.line_utils import get_fits_by_sliding_windows, Line, 
 from models.lane_detection.globals import xm_per_pix, time_window
 
 from flask import Flask, request, jsonify, json
-import numpy as np
-import cv2
-import os
-
-from PIL import Image
-from moviepy.editor import VideoFileClip
-
-from models.vehicle_detection.yolo_pipeline import *
 from models.vehicle_detection.lane import *
 from models.vehicle_detection.yolo_pipeline.yolo_pipeline import *
 
