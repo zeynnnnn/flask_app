@@ -9,7 +9,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 import pickle
 from copy import copy
-from visualizations import *
+from models.vehicle_detection.visualizations import *
 from timeit import default_timer as timer
 
 ### Parameters
@@ -58,7 +58,7 @@ def get_hog_features(img, orient, pix_per_cell, cell_per_block,
                        pixels_per_cell=(pix_per_cell, pix_per_cell),
                        cells_per_block=(cell_per_block, cell_per_block),
                        transform_sqrt=True,
-                       visualise=vis, feature_vector=feature_vec)
+                       visualize=vis, feature_vector=feature_vec)
         return features
 
 

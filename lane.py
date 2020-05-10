@@ -9,7 +9,7 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 from timeit import default_timer as timer
-from calibration import load_calibration
+from models.vehicle_detection.calibration import load_calibration
 from copy import copy
 
 
@@ -79,7 +79,7 @@ M_b = cv2.getPerspectiveTransform(src_, dst_)
 s_thresh, sx_thresh, dir_thresh, m_thresh, r_thresh = (120, 255), (20, 100), (0.7, 1.3), (30, 100), (200, 255)
 
 # load the calibration
-calib_file = 'calibration_pickle.p'
+calib_file = 'models/vehicle_detection/calibration_pickle.p'
 mtx, dist = load_calibration(calib_file)
 
 

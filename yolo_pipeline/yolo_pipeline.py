@@ -1,16 +1,19 @@
 # import numpy as np
-import tensorflow as tf
 # import cv2
 from timeit import default_timer as timer
+
+import tensorflow as tf
+
 # import time
 # import matplotlib.pyplot as plt
-from visualizations import *
+from models.vehicle_detection.visualizations import *
+
 
 class yolo_tf:
     w_img = 1280
     h_img = 720
 
-    weights_file = 'weights/YOLO_small.ckpt'
+    weights_file = 'models/vehicle_detection/weights/YOLO_small.ckpt'
     alpha = 0.1
     threshold = 0.3
     iou_threshold = 0.5
@@ -108,11 +111,14 @@ def detect_from_cvmat(yolo,img):
     in_dict = {yolo.x: inputs}
     net_output = yolo.sess.run(yolo.fc_32,feed_dict=in_dict)
     result = interpret_output(yolo, net_output[0])
+    print("Result:")
+    print(result)
     yolo.result_list = result
+    return result
 
 
 def detect_from_file(yolo,filename):
-    detect_from_cvmat(yolo, filename)
+    return detect_from_cvmat(yolo, filename)
 
 
 def interpret_output(yolo,output):
@@ -156,6 +162,7 @@ def interpret_output(yolo,output):
 
     filter_iou = np.array(probs_filtered>0.0,dtype='bool')
     boxes_filtered = boxes_filtered[filter_iou]
+
     probs_filtered = probs_filtered[filter_iou]
     classes_num_filtered = classes_num_filtered[filter_iou]
 
@@ -171,7 +178,7 @@ def draw_results(img, image_lane, yolo, fps, lane_info):
     results = yolo.result_list
 
     # draw the highlighted background
-    img_cp = draw_background_highlight(img_cp, image_lane, yolo.w_img)
+   # img_cp = draw_background_highlight(img_cp, image_lane, yolo.w_img)
 
     window_list = []
     for i in range(len(results)):
@@ -183,7 +190,7 @@ def draw_results(img, image_lane, yolo, fps, lane_info):
         cv2.rectangle(img_cp,(x-w,y-h-20),(x+w,y-h),(125,125,125),-1)
         # cv2.putText(img_cp,results[i][0] + ' : %.2f' % results[i][5],(x-w+5,y-h-7),cv2.FONT_HERSHEY_SIMPLEX,0.5,(255,255,0),1)
         cv2.putText(img_cp,results[i][0],(x-w+5,y-h-7),cv2.FONT_HERSHEY_SIMPLEX,0.5,(255,255,0),1)
-        if results[i][0] == "car" or results[i][0] == "bus":
+        if results[i][0] == "car" or results[i][0] == "bus" or results[i][0]=="person":
             window_list.append(((x-w,y-h),(x+w,y+h)))
 
     # draw vehicle thumbnails
@@ -193,7 +200,7 @@ def draw_results(img, image_lane, yolo, fps, lane_info):
     # draw_speed(img_cp, fps, yolo.w_img)
 
     # draw lane status
-    draw_lane_status(img_cp,lane_info)
+   # draw_lane_status(img_cp,lane_info)
 
     return img_cp
 
@@ -211,11 +218,12 @@ yolo = yolo_tf()
 def vehicle_detection_yolo(image, image_lane, lane_info):
     # set the timer
     start = timer()
-    detect_from_file(yolo, image)
-
+    return detect_from_file(yolo, image)
+    '''
     # compute frame per second
     fps = 1.0 / (timer() - start)
     # draw visualization on frame
     yolo_result = draw_results(image, image_lane, yolo, fps, lane_info)
+     return yolo.result
+    '''
 
-    return yolo_result
