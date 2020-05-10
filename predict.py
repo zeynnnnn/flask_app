@@ -6,7 +6,7 @@ from models.lane_detection.globals import xm_per_pix, time_window
 
 from flask import Flask, request, jsonify, json
 from models.vehicle_detection.lane import *
-from models.vehicle_detection.yolo_pipeline.yolo_pipeline import *
+from models.vehicle_detection.yolo_pipeline import *
 
 
 def pipeline_yolo(img):
