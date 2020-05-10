@@ -2,7 +2,7 @@ Flask app for cloud models of drivision
 
 Download vehicle detection checkpoint from: https://drive.google.com/file/d/0B5WIzrIVeL0WS3N2VklTVmstelE/view and put it to the models/vehicle_detection/weights folder
 ## HOW TO RUN (WITH DOCKER)
-docker-compose up --build 
+sudo docker-compose up --build 
 
 
 ## HOW TO RUN (WITHOUT DOCKER)
@@ -10,9 +10,7 @@ docker-compose up --build
 reference: https://www.alexkras.com/how-to-use-virtualenv-in-python-to-install-packages-locally/
 
 
-pip install virtualenv
-
-
+*pip install virtualenv
 * cd drivision-models
 * virtualenv venv
 * source venv/bin/activate (bu virtual env'i aktive ediyor, virtualenv i kapatmak icin deactivate yaziyoruz)
